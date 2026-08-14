@@ -54,3 +54,25 @@ window.onload = function() {
         });
     }
 };
+
+// --- TÍNH NĂNG CHẾ ĐỘ TỐI (DARK MODE) ---
+document.addEventListener("DOMContentLoaded", () => {
+    const darkModeBtn = document.getElementById("dark-mode-toggle"); // Đổi ID này thành id của cái nút bấm bật tối trên web bạn
+    
+    // Kiểm tra xem trước đó người dùng đã bật tối chưa
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+
+    if (darkModeBtn) {
+        darkModeBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            // Lưu lại trạng thái vào bộ nhớ trình duyệt
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        });
+    }
+});
