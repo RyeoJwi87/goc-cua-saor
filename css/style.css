@@ -1,0 +1,825 @@
+:root {
+    /* Gradient tuyến tính từ trên xuống dưới cho Nền Sáng (Hồng kem / Cam nhạt dịu) */
+    --bg-main: linear-gradient(135deg, #ffffff 0%, #FFC5D3 50%, #ffffff 100%);
+    
+    --text-main: #2b2b2b;
+    --card-bg: rgba(255, 255, 255, 0.85); /* Thêm độ trong suốt nhẹ để nổi trên nền gradient */
+    --border-color: #e5e5e5;
+    --accent: #8b0000;
+    --font-read: 'Time new roman', 'Merriweather', serif;
+        /* Màu nền Header ở nền sáng (Ví dụ: Trắng ngà nhẹ hoặc kem) */
+    --header-bg: #ffffff 50%; 
+    --header-border: #e5e5e5;
+}
+
+[data-theme="dark"] {
+    /* Gradient từ xám đen sang xanh đen trầm cho Nền Tối */
+    --bg-main: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    
+    --text-main: #d0d0d0;
+    --card-bg: rgba(30, 30, 30, 0.85); /* Trong suốt nhẹ cho thẻ truyện ở chế độ tối */
+    --border-color: #333333;
+    --accent: #ff6b6b;
+    --header-bg: #1e1e1e; 
+    --header-border: #333333;
+}
+
+body {
+    /* Sử dụng background-image hoặc background ngắn gọn */
+    background: var(--bg-main);
+    background-attachment: fixed; /* Giữ gradient cố định khi cuộn trang */
+    min-height: 100vh; /* Đảm bảo gradient phủ kín chiều cao màn hình */
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+}
+
+header {
+    border-bottom: 1px solid var(--border-color);
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+}
+
+.nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 1rem;
+}
+
+.nav-container h2 {
+    font-size: 1.15rem; /* Giảm kích thước chữ tiêu đề */
+    margin: 0;          /* Xóa khoảng cách thừa xung quanh h2 */
+    line-height: 1;
+}
+
+.nav-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    margin-right: 1.2rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.theme-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.grid-stories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.story-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 5px rgba(235, 65, 106, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #ffffff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Cần thiết để các thẻ cạnh nhau bằng chiều cao */
+
+}
+
+[data-theme="dark"] .story-card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid #000000;
+}
+
+.story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(235, 65, 106, 0.2);
+}
+
+[data-theme="dark"] .story-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 2. Khối thông tin bên dưới ảnh bìa */
+.story-info {
+    font-size: 1.5rem;
+    flex-grow: 0.3; /* Tự động dãn ra để chiếm hết khoảng trống còn thừa */
+    padding: 0.8rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Chiếm trọn phần chiều cao còn lại bên dưới ảnh bìa */
+}
+
+/* Tiêu đề truyện - Cố định 2 dòng để không làm xê dịch tag bên dưới */
+.story-info h4 {
+    margin: 0 0 0.4rem 0;
+    font-size: 1rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Tối đa 2 dòng, nếu dài hơn sẽ hiện dấu ... */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.7em; /* Giữ cố định độ cao dù tên 1 hay 2 dòng */
+}
+
+/* 3. Đoạn văn mô tả truyện */
+.story-info p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+    flex-grow: 1; /* Đẩy hàng nút bấm xuống tận đáy */
+}
+
+/* 4. Hàng chứa 2 nút Đọc ngay & Yêu thích */
+.story-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* Thuộc tính quan trọng nhất: tự đẩy hàng nút xuống dính đáy */
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--border-color); /* Thêm viền đứt nét nhẹ phân cách cho đỡ trống */
+}
+
+/* 1. Mặc định ở Chế độ Sáng (Light Mode) */
+.story-actions a,
+.story-actions .btn-fav {
+    color: #eb416a; /* Màu tím đậm mặc định */
+}
+
+/* Viền nét đứt phía trên hàng nút ở chế độ sáng */
+.story-actions {
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* 2. Tự động đổi màu khi bật Chế độ Tối (Dark Mode) */
+[data-theme="dark"] .story-actions a,
+[data-theme="dark"] .story-actions .btn-fav,
+body.dark-mode .story-actions a,
+body.dark-mode .story-actions .btn-fav,
+body.dark .story-actions a,
+body.dark .story-actions .btn-fav {
+    color: #246480 !important; /* Màu tím sáng dịu mắt trên nền tối */
+}
+
+/* Đổi màu đường viền đứt ở chế độ tối */
+[data-theme="dark"] .story-actions,
+body.dark-mode .story-actions,
+body.dark .story-actions {
+    border-top-color: rgba(179, 136, 255, 0.25) !important;
+}
+
+
+/* Style mặc định cho nút Đọc ngay & Yêu thích ngoài trang chủ (Chế độ Sáng) */
+.btn-read-card,
+.story-actions .btn-fav {
+    color: #eb416a;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.85rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Đổi màu khi bật Chế độ Tối (Dark Mode) */
+[data-theme="dark"] .btn-read-card,
+[data-theme="dark"] .story-actions .btn-fav,
+body.dark-mode .btn-read-card,
+body.dark-mode .story-actions .btn-fav,
+body.dark .btn-read-card,
+body.dark .story-actions .btn-fav {
+    color: #246480 !important; /* Màu tím sáng nổi bật trên nền tối */
+}
+
+
+/* Khung chứa danh sách các tag */
+.story-tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.8rem;
+    overflow: hidden;   /* Ẩn bớt nếu quá nhiều tag tránh làm phồng thẻ */
+    max-height: 3.6rem;
+}
+
+/* Style cho từng ô tag riêng lẻ */
+.story-tag {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.06);
+    color: #333333;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    opacity: 0.85;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+[data-theme="dark"] .story-tag {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+}
+
+.btn-fav {
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.reading-body {
+    font-family: var(--font-read);
+    font-size: 1.2rem;
+    line-height: 1.9;
+    max-width: 720px;
+    margin: 0 auto;
+    white-space: pre-line;
+}
+
+.chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chapter-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Khung chứa ảnh bìa tỉ lệ 3:4 */
+.story-cover-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Ép khung về chuẩn tỉ lệ 3:4 */
+    overflow: hidden; /* Bắt buộc phải có để cắt góc ảnh thừa ra ngoài */
+    border-radius: 15px; /* Độ bo góc của khung (tùy chỉnh số px theo ý thích) */
+    display: block;
+    background-color: var(--border-color);
+}
+
+/* Tự động co giãn và căn chỉnh ảnh bìa */
+.story-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* Tự căn vừa khít khung mà không bị móp méo */
+    object-position: center; /* Căn tâm ảnh vào giữa khung */
+    border-radius: 15px; /* Bo góc đồng bộ với khung */
+    display: block;
+}
+
+
+/* ===================================================
+   STYLE TRANG CHI TIẾT TRUYỆN (PHONG CÁCH THICHANMAN)
+   =================================================== */
+
+/* Khung chính chứa toàn bộ thông tin truyện */
+.story-header-card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(235, 65, 106, 0.25);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(235, 65, 106, 0.3);
+}
+
+[data-theme="dark"] .story-header-card {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(32, 58, 67, 0.25);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.story-header-cover {
+    width: 220px;
+    flex-shrink: 0;
+}
+
+.story-header-cover img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 12px;
+    outline: 1px solid rgba(235, 65, 106, 0.3);
+    outline-offset: 5px;
+    box-shadow: 0 6px 20px transparent;
+}
+
+[data-theme="dark"] .story-header-cover img {
+    outline: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.story-header-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.story-header-info h1 {
+    font-size: 1.8rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+}
+
+/* Thống kê (Lượt xem, Theo dõi, Số chương) */
+.story-stats {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 1.2rem;
+}
+
+.story-status-badge {
+    display: inline-block;
+    background: #00c853;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+    align-self: flex-start;
+}
+
+/* Khối nút bấm chính */
+.story-header-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.btn-read-main {
+    background: linear-gradient(135deg, #FFC5D3 0%, #eb416a 100%);
+    color: #ffffff !important;
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(235, 65, 106, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+[data-theme="dark"] .btn-read-main {
+    background: linear-gradient(135deg, #203a43 0%, #2c5364 100%);
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-read-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(235, 65, 106, 0.2);
+}
+
+[data-theme="dark"] .btn-read-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-fav-main {
+    background: rgba(255, 197, 211, 0.5);
+    border: 1px solid rgba(235, 65, 106, 0.2);
+    color: var(--text-main);
+    padding: 0.75rem 1.8rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+}
+
+[data-theme="dark"] .btn-fav-main {
+    background: rgba(44, 83, 100, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-fav-main:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .btn-fav-main:hover {
+    background: rgba(44, 83, 100, 0.15);
+}
+
+/* Các Section chung */
+.section-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 2rem 0 1rem 0;
+    padding-left: 0.8rem;
+    border-left: 4px solid #FFC5D3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+[data-theme="dark"] .section-title {
+    border-left: 4px solid #000000;
+}
+
+.story-intro-box {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(235, 65, 106, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+[data-theme="dark"] .story-intro-box {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Lưới danh sách chương (2 cột) */
+.chapter-tools {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.search-chapter-input {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(235, 65, 106, 0.3);
+    color: var(--text-main);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+[data-theme="dark"] .search-chapter-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Ép hiển thị chuẩn 2 cột như ảnh */
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .chapter-grid {
+        grid-template-columns: 1fr; /* Trên điện thoại tự co về 1 cột */
+    }
+    .story-header-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .story-status-badge {
+        align-self: center;
+    }
+}
+
+.chapter-item-btn {
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(235, 65, 106, 0.15);
+    border-radius: 10px;
+    padding: 0.85rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+[data-theme="dark"] .chapter-item-btn {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.chapter-item-btn:hover {
+    background: rgba(255, 197, 211, 0.15);
+    border-color: rgba(235, 65, 106, 0.5);
+}
+
+[data-theme="dark"] .chapter-item-btn:hover {
+    background: rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.5);
+}
+
+.chapter-item-title {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 0.5rem;
+}
+
+.chapter-item-badge {
+    font-size: 0.75rem;
+    background: rgba(235, 65, 106, 0.1);
+    color: #eb416a;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+[data-theme="dark"] .chapter-item-badge {
+    background: rgba(44, 83, 100, 0.35);
+    color: #ffffff;
+}
+
+/* Căn hàng Số chương + Hoàn thành trên cùng 1 dòng */
+.story-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+/* Đảm bảo badge Hoàn thành không bị margin thừa khi lên cùng hàng */
+.story-meta-row .story-status-badge {
+    margin-bottom: 0;
+}
+
+/* Định dạng các hàng chứa Tác giả và Editor */
+.story-info-line {
+    font-size: 0.9rem;
+    margin-bottom: auto;
+    opacity: 0.9;
+}
+
+.story-info-line strong {
+    color: var(--accent, #7c4dff);
+}
+
+/* Màu chữ <strong> ở Chế độ Sáng mặc định */
+.story-info-line strong {
+    color: #eb416a; /* Hoặc màu tím đậm tùy ý */
+}
+
+/* Màu chữ <strong> tự động đổi khi bật Chế độ Tối (Dark mode) */
+[data-theme="dark"] .story-info-line strong {
+    color: #246480; /* Màu tím sáng / neon dịu mắt trên nền tối */
+}
+
+/* ==========================================
+   TỐI ƯU TRANG ĐỌC TRUYỆN (READ.HTML)
+   ========================================== */
+
+/* Fix font chữ tiếng Việt không bị lỗi dấu */
+.reader-content, 
+.reader-container {
+    font-family: 'Time new roman', -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+/* Nút đường dẫn quay lại trang giới thiệu truyện */
+.back-to-story-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    background: rgba(124, 77, 255, 0.1);
+    border: 1px solid rgba(124, 77, 255, 0.3);
+    border-radius: 20px;
+    color: #651fff !important;
+    font-weight: 600;
+    text-decoration: none !important; /* Xóa gạch chân */
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+}
+
+.back-to-story-link:hover {
+    background: rgba(124, 77, 255, 0.2);
+    transform: translateX(-3px);
+}
+
+/* Khung thanh điều hướng (Chương trước - Mục lục - Chương sau) */
+.reader-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+    padding: 0.8rem 0;
+}
+
+/* Thiết kế lại Nút Mục lục & Sang trang thành khung nổi bật */
+.reader-nav a, 
+.reader-nav button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1.2rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(124, 77, 255, 0.3);
+    border-radius: 8px;
+    color: #651fff !important; /* Màu chữ nét tím */
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.reader-nav a:hover, 
+.reader-nav button:hover {
+    background: #651fff;
+    color: #ffffff !important; /* Đổi nền tím chữ trắng khi hover */
+    border-color: #651fff;
+    box-shadow: 0 4px 12px rgba(101, 31, 255, 0.3);
+}
+
+/* --- TỰ ĐỘNG ĐỔI MÀU KHI BẬT DARK MODE --- */
+[data-theme="dark"] .back-to-story-link,
+body.dark-mode .back-to-story-link,
+body.dark .back-to-story-link {
+    background: rgba(179, 136, 255, 0.15);
+    border-color: rgba(179, 136, 255, 0.4);
+    color: #b388ff !important;
+}
+
+[data-theme="dark"] .reader-nav a,
+[data-theme="dark"] .reader-nav button,
+body.dark-mode .reader-nav a,
+body.dark-mode .reader-nav button,
+body.dark .reader-nav a,
+body.dark .reader-nav button {
+    background: rgba(22, 18, 48, 0.7);
+    border-color: rgba(179, 136, 255, 0.3);
+    color: #b388ff !important; /* Màu chữ tím neon mờ */
+    box-shadow: none;
+}
+
+[data-theme="dark"] .reader-nav a:hover,
+[data-theme="dark"] .reader-nav button:hover,
+body.dark-mode .reader-nav a:hover,
+body.dark-mode .reader-nav button:hover,
+body.dark .reader-nav a:hover,
+body.dark .reader-nav button:hover {
+    background: #7c4dff;
+    color: #ffffff !important;
+    border-color: #7c4dff;
+}
+
+/* ==========================================
+   STYLE ĐIỀU HƯỚNG CHƯƠNG PHONG CÁCH MỚI
+   ========================================== */
+
+.chapter-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.nav-top {
+    justify-content: center;
+    border-bottom: 1px solid rgba(235, 65, 106, 0.6);
+    border-top: 1px solid transparent;
+}
+
+.nav-bottom {
+    justify-content: space-between; /* Đẩy 2 nút về 2 mép lề */
+    border-top: 1px solid rgba(235, 65, 106, 0.6);
+    border-bottom: 1px solid transparent;
+    padding-top: 1.2rem;
+}
+
+/* 1. Nút bo tròn màu trắng viền xám (Chương trước / Outline) */
+.btn-nav-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1.4rem;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 30px; /* Bo tròn hoàn toàn dạng pill */
+    color: #222222 !important;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    transition: all 0.2s ease;
+}
+
+.btn-nav-outline:hover {
+    border-color: #7c4dff;
+    color: #7c4dff !important;
+}
+
+/* Nút ẩn/vô hiệu hóa khi ở chương đầu */
+.btn-nav-disabled {
+    padding: 0.55rem 1.4rem;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 30px;
+    color: #aaa;
+    font-size: 0.88rem;
+    cursor: not-allowed;
+}
+
+/* 2. Nút tím nổi bật (Chương sau ở thanh dưới) */
+.btn-nav-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.6rem;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c4dff 100%);
+    border: none;
+    border-radius: 30px;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(124, 77, 255, 0.35);
+    transition: all 0.2s ease;
+}
+
+.btn-nav-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124, 77, 255, 0.5);
+}
+
+/* 3. Dropdown Menu chọn chương ở giữa */
+.chapter-select {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 30px;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #222222;
+    outline: none;
+    cursor: pointer;
+    max-width: 260px;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+/* ==========================================
+   TỰ ĐỘNG ĐỔI STYLE KHI BẬT DARK MODE
+   ========================================== */
+
+[data-theme="dark"] .nav-bottom,
+body.dark-mode .nav-bottom,
+body.dark .nav-bottom {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .nav-top,
+body.dark-mode .nav-top,
+body.dark .nav-top {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn-nav-outline,
+[data-theme="dark"] .chapter-select,
+body.dark-mode .btn-nav-outline,
+body.dark-mode .chapter-select,
+body.dark .btn-nav-outline,
+body.dark .chapter-select {
+    background: rgba(30, 26, 58, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #e2e8f0 !important;
+}
+[data-theme="dark"] .btn-nav-outline:hover,
+body.dark-mode .btn-nav-outline:hover,
+body.dark .btn-nav-outline:hover {
+    border-color: #b388ff;
+    color: #b388ff !important;
+}
+
+[data-theme="dark"] .chapter-select option {
+    background: #161230;
+    color: #e2e8f0;
+}
