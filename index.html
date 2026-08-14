@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' data: blob: https://docs.google.com https://*.google.com;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Góc của Sảo</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <h2><a href="index.html" style="color:inherit; text-decoration:none;">Góc của Sảo</a></h2>
+            <nav class="nav-links">
+                <a href="index.html">Trang chủ</a>
+                <a href="favorites.html">Truyện yêu thích</a>
+                <a href="about.html">Giới thiệu về bản thân</a>
+                <button id="theme-toggle" class="theme-btn">Chế độ tối</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h3>Tất cả tác phẩm</h3>
+        <div id="story-list" class="grid-stories"></div>
+    </main>
+    <script src="js/app.js"></script>
+</body>
+</html>
