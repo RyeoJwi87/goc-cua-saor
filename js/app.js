@@ -1,13 +1,14 @@
 /* ==========================================
-   KHO TRUYỆN CÁ NHÂN & HÀM HIỂN THỊ GIAO DIỆN
+   KHO TRUYỆN & GIAO DIỆN HOÀN CHỈNH (CÓ DARK MODE)
    ========================================== */
 
+// 1. Kho truyện của bạn (Thêm truyện, sửa nội dung trực tiếp tại đây)
 const STORIES = [
     {
         id: "truyen-1",
         title: "Tên Truyện Thứ Nhất",
         cover: "images/bia-truyen-1.jpg", 
-        description: "Phần giới thiệu tóm tắt nội dung câu chuyện...",
+        description: "Phần giới thiệu tóm tắt nội dung câu chuyện trong thế giới Caelunaris...",
         category: "Fantasy",
         chapters: [
             { id: "ch-1", title: "Chương 1", content: "<p>Nội dung chương 1...</p>" }
@@ -15,7 +16,7 @@ const STORIES = [
     }
 ];
 
-// Hàm tự động dựng danh sách truyện ra trang chủ (nếu trang có thẻ id="story-list")
+// 2. Hàm tự động đổ danh sách truyện ra thẻ <div id="story-list"></div>
 function renderStoryList() {
     const listContainer = document.getElementById('story-list');
     if (!listContainer) return;
@@ -29,8 +30,27 @@ function renderStoryList() {
     `).join('');
 }
 
+// 3. Kích hoạt toàn bộ tính năng khi web tải xong
 window.onload = function() {
+    // Hiển thị danh sách truyện
     renderStoryList();
-    if (document.getElementById('story-detail')) renderStoryDetail();
-    if (document.getElementById('chapter-content')) renderChapterContent();
+    
+    // Xử lý nút Chế độ tối (Dark Mode)
+    const darkModeBtn = document.getElementById("dark-mode-toggle");
+    
+    // Kiểm tra trạng thái đã lưu trước đó
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+
+    if (darkModeBtn) {
+        darkModeBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        });
+    }
 };
