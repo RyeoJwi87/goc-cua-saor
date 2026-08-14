@@ -36,7 +36,7 @@ window.onload = function() {
     renderStoryList();
     
     // Xử lý nút Chế độ tối (Dark Mode)
-    const darkModeBtn = document.getElementById("dark-mode-toggle");
+    const darkModeBtn = document.getElementById("theme-toggle");
     
     // Kiểm tra trạng thái đã lưu trước đó
     if (localStorage.getItem("theme") === "dark") {
