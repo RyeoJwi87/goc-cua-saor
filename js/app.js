@@ -35,29 +35,10 @@ window.onload = function() {
     // Hiển thị danh sách truyện
     renderStoryList();
     
-    // Xử lý nút Chế độ tối (Dark Mode)
-    const darkModeBtn = document.getElementById("theme-toggle");
-    
-    // Kiểm tra trạng thái đã lưu trước đó
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-
-    if (darkModeBtn) {
-        darkModeBtn.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            if (document.body.classList.contains("dark-mode")) {
-                localStorage.setItem("theme", "dark");
-            } else {
-                localStorage.setItem("theme", "light");
-            }
-        });
-    }
-};
 
 // --- TÍNH NĂNG CHẾ ĐỘ TỐI (DARK MODE) ---
 document.addEventListener("DOMContentLoaded", () => {
-    const darkModeBtn = document.getElementById("dark-mode-toggle"); // Đổi ID này thành id của cái nút bấm bật tối trên web bạn
+    const darkModeBtn = document.getElementById("theme-toggle"); // Đổi ID này thành id của cái nút bấm bật tối trên web bạn
     
     // Kiểm tra xem trước đó người dùng đã bật tối chưa
     if (localStorage.getItem("theme") === "dark") {
@@ -76,3 +57,35 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+/* ==========================================
+   DÙNG ĐOẠN NÀY ĐỂ DEBUG TRỰC TIẾP
+   ========================================== */
+
+window.onload = function() {
+    console.log("Web đã tải xong!");
+
+    // Xử lý Dark Mode
+    const btn = document.getElementById("theme-toggle");
+    if (btn) {
+        console.log("Đã tìm thấy nút theme-toggle!");
+        
+        // Khôi phục trạng thái
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+
+        btn.addEventListener("click", function() {
+            console.log("Nút đã được bấm!");
+            document.body.classList.toggle("dark-mode");
+            
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        });
+    } else {
+        console.error("KHÔNG TÌM THẤY nút theme-toggle trong HTML!");
+    }
+};
